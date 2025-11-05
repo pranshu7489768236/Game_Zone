@@ -4,13 +4,13 @@ import com.colorprediction.dto.*;
 import com.colorprediction.model.GamePeriod;
 import com.colorprediction.model.User;
 import com.colorprediction.model.UserPrediction;
-import com.colorprediction.repository.GamePeriodRepository;
 import com.colorprediction.service.AuthService;
 import com.colorprediction.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +23,6 @@ public class GameController {
     
     private final GameService gameService;
     private final AuthService authService;
-    private final GamePeriodRepository periodRepository;
     
     @GetMapping("/period")
     public ResponseEntity<GamePeriodResponse> getCurrentPeriod() {
@@ -51,7 +50,7 @@ public class GameController {
                 return ResponseEntity.badRequest().body("User not found");
             }
             
-            UserPrediction prediction = gameService.submitPrediction(
+            gameService.submitPrediction(
                     user,
                     request.getPeriodId(),
                     request.getColor(),
