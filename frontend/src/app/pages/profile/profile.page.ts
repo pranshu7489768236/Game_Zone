@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../core/auth.service';
@@ -30,17 +30,17 @@ interface ProfileResponse { mobileNumber: string; walletBalance: number; }
     </div>
   `
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
   private http = inject(HttpClient);
   private auth = inject(AuthService);
   private router = inject(Router);
   profile: ProfileResponse | null = null;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.http.get<ProfileResponse>('/api/user/me').subscribe(res => this.profile = res);
   }
 
-  logout() {
+  logout(): void {
     this.auth.logout();
     this.router.navigateByUrl('/login');
   }

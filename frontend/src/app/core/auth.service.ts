@@ -12,7 +12,14 @@ export class AuthService {
   private http = inject(HttpClient);
   private baseUrl = '/api';
 
-  private authState$ = new BehaviorSubject<boolean>(this.hasToken());
+  private authState$ = new BehaviorSubject<boolean>(false);
+
+  constructor() {
+    // Defer localStorage access to avoid issues during bootstrap
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.authState$.next(this.hasToken());
+    }
+  }
 
   get isAuthenticated$(): Observable<boolean> {
     return this.authState$.asObservable();

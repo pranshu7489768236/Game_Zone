@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { canActivateAuth } from './core/auth.guard';
 
 export const APP_ROUTES: Routes = [
   {
@@ -25,7 +24,6 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'profile',
-    canActivate: [canActivateAuth],
     loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage)
   },
   { path: '**', redirectTo: 'home' }
